@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Isolation Island</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header>
+      <a href="/">▱ ISOLATION ISLAND</a
+      ><span>MULTIVERSION TRANSACTIONS / LOCAL WORKSPACE</span
+      ><button id="export">Export evidence ↗</button>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="small">A VIEW FROM EACH TRANSACTION</p>
+          <h1>The present has<br />more than one version.</h1>
+        </div>
+        <p>
+          Read a snapshot. Stage a change.<br />See what survives the commit.
+        </p>
+      </section>
+      <section class="workspace-bar">
+        <label>Workspace<select id="workspaces"></select></label
+        ><button id="refresh">Refresh</button
+        ><label
+          >New example mode<select id="example-mode">
+            <option value="snapshot">Snapshot isolation</option>
+            <option value="serializable">Serializable validation</option>
+          </select></label
+        ><button id="skew">Run write-skew example</button>
+      </section>
+      <section class="summary">
+        <div><small>ISOLATION MODEL</small><strong id="mode">—</strong></div>
+        <div>
+          <small>LATEST WRITE COMMIT</small><strong id="head">0</strong>
+        </div>
+        <div><small>EXAMPLE RULE</small><strong id="rule">—</strong></div>
+        <div><small>DURABLE HISTORY</small><strong id="audit">—</strong></div>
+      </section>
+      <section class="records">
+        <div class="section-head">
+          <h2>Every committed version.</h2>
+          <span id="view-note"></span>
+        </div>
+        <div id="record-list"></div>
+      </section>
+      <section class="transaction-area">
+        <nav>
+          <p class="small">TRANSACTIONS</p>
+          <div id="transactions"></div>
+          <form id="begin-form">
+            <label
+              >Transaction ID<input id="tx-id" required maxlength="48" /></label
+            ><label
+              >Client label<input
+                id="client"
+                value="Analyst"
+                required
+                maxlength="48" /></label
+            ><button>Begin snapshot ↗</button>
+          </form>
+        </nav>
+        <article>
+          <div class="section-head">
+            <div>
+              <p class="small">TRANSACTION INSPECTOR</p>
+              <h2 id="tx-title">Choose or begin a transaction.</h2>
+            </div>
+            <span id="tx-state"></span>
+          </div>
+          <div class="sets">
+            <div>
+              <small>READ SET · OBSERVED VERSIONS</small>
+              <pre id="reads">{}</pre>
+            </div>
+            <div>
+              <small>STAGED WRITES · PRIVATE</small>
+              <pre id="writes">{}</pre>
+            </div>
+          </div>
+          <div class="operation">
+            <label>Record<select id="record"></select></label
+            ><button id="read">Read snapshot</button
+            ><label
+              >New integer value<input
+                id="value"
+                type="number"
+                min="-1000000"
+                max="1000000"
+                step="1"
+                value="0" /></label
+            ><button id="write">Stage write</button>
+          </div>
+          <p id="read-result"></p>
+          <div class="commit-actions">
+            <button id="commit">Validate & commit</button
+            ><button id="abort">Abort transaction</button>
+          </div>
+          <pre id="conflicts"></pre>
+          <p class="note">
+            Staged writes are visible only to their transaction. Other readers
+            keep their original snapshot, even after a new commit.
+          </p>
+        </article>
+      </section>
+      <p id="status" role="status"></p>
+      <p id="error" role="alert"></p>
+      <section class="events">
+        <div class="section-head">
+          <h2>The command journal.</h2>
+          <span id="event-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Transaction</th>
+                <th>Command</th>
+                <th>Outcome</th>
+                <th>Inspect</th>
+              </tr>
+            </thead>
+            <tbody id="event-list"></tbody>
+          </table>
+        </div>
+        <details>
+          <summary>Selected event</summary>
+          <pre id="event-detail"></pre>
+        </details>
+      </section>
+      <section class="lower">
+        <details>
+          <summary>Create a custom workspace</summary>
+          <form id="create-form">
+            <label
+              >Workspace ID<input
+                id="workspace-id"
+                value="my-workspace"
+                required
+                maxlength="48" /></label
+            ><label
+              >Validation mode<select id="create-mode">
+                <option value="snapshot">Snapshot isolation</option>
+                <option value="serializable">Serializable validation</option>
+              </select></label
+            ><label
+              >Initial records · JSON<textarea id="seed" rows="6">
+{"east":1,"west":1}</textarea
+              ></label
+            ><button>Create workspace</button>
+          </form>
+          <p>
+            1–12 fixed record names with integer values. Existing workspaces
+            cannot be reseeded or change modes.
+          </p>
+        </details>
+        <div>
+          <details>
+            <summary>Why write skew happens</summary>
+            <p>
+              The example rule requires at least one replica online: east + west
+              ≥ 1. Two transactions both read east = west = 1, then
+              independently take a different replica offline.
+            </p>
+            <p>
+              Snapshot isolation checks overlapping writes, so these disjoint
+              writes both commit. Serializable validation also checks recorded
+              reads; the second transaction aborts because the first changed a
+              value it relied on.
+            </p>
+          </details>
+          <details>
+            <summary>What this implementation guarantees</summary>
+            <p>
+              This custom model uses a fixed key set and point reads. Snapshot
+              mode rejects writes to keys changed after the transaction began.
+              Serializable mode additionally rejects any recorded read whose
+              latest version changed, even if its value later changed back.
+            </p>
+            <p>
+              Serializable mode is conservative optimistic validation in commit
+              order, not PostgreSQL SSI. It may reject histories another
+              serializable algorithm could allow, including stale read-only
+              transactions. No range reads, inserts, deletes, or phantom
+              predicates are modeled.
+            </p>
+            <p>
+              SQLite durably stores the modeled state and immutable command
+              journal. Each command atomically updates both. Logical
+              transactions span many HTTP requests; they do not keep a SQLite
+              transaction open between requests. This is a bounded teaching
+              engine, not a production database.
+            </p>
+          </details>
+          <details>
+            <summary>Retries, persistence, and limits</summary>
+            <p>
+              Reusing a transaction ID with the same client returns its existing
+              state. Repeating commit or abort preserves a terminal outcome and
+              creates no duplicate record versions. Every accepted command
+              attempt still appends a journal event. Rejected malformed or
+              invalid-state requests do not.
+            </p>
+            <p>
+              20 workspaces per database; 100 transactions and 500 events per
+              workspace; at most 12 active transactions. State survives restart.
+              Client labels are not authentication; keep the loopback server
+              local and use fictional records. Hashes detect inconsistency, not
+              malicious database-owner rewrites.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer>
+      Isolation Island / Snapshots, decisions, consequences.<span
+        >Persistent SQLite state · real HTTP commands</span
+      >
+    </footer>
+  </body>
+</html>

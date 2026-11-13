@@ -1,0 +1,440 @@
+{
+  "seed": {
+    "id": "serializable_2f3a2ba7",
+    "mode": "serializable",
+    "records": {
+      "east": 1,
+      "west": 1
+    }
+  },
+  "state": {
+    "mode": "serializable",
+    "head": 1,
+    "versions": {
+      "east": [
+        {
+          "version": 0,
+          "value": 1
+        },
+        {
+          "version": 1,
+          "value": 0
+        }
+      ],
+      "west": [
+        {
+          "version": 0,
+          "value": 1
+        }
+      ]
+    },
+    "transactions": {
+      "A": {
+        "id": "A",
+        "client": "A",
+        "snapshot": 0,
+        "status": "committed",
+        "reads": {
+          "east": 0,
+          "west": 0
+        },
+        "writes": {
+          "east": 0
+        },
+        "commit": 1,
+        "conflicts": [],
+        "reason": "committed"
+      },
+      "B": {
+        "id": "B",
+        "client": "B",
+        "snapshot": 0,
+        "status": "aborted",
+        "reads": {
+          "east": 0,
+          "west": 0
+        },
+        "writes": {
+          "west": 0
+        },
+        "commit": null,
+        "conflicts": [
+          {
+            "key": "east",
+            "type": "read_changed",
+            "observed": 0,
+            "latest": 1
+          }
+        ],
+        "reason": "validation_failed"
+      }
+    }
+  },
+  "events": [
+    {
+      "event": {
+        "after_hash": "90d6cedfed61a506fe81831fbaad2b226c4a79a22d9025f5ecb23cf475c0056c",
+        "before_hash": "f8dcc3d4dd80b945109d9497013b91c3960f05fa757e46409cdd314112120ad7",
+        "command": {
+          "action": "begin",
+          "client": "A",
+          "tx": "A"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "6ca3a792cfb49db04c45928f9fc463892de59755058961bb3c6360d7ce2f9c82",
+        "result": {
+          "replayed": false,
+          "transaction": {
+            "client": "A",
+            "commit": null,
+            "conflicts": [],
+            "id": "A",
+            "reads": {},
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          }
+        },
+        "sequence": 1,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "4814233c4979048d11deeb99703896afa059f00a9a8c909e62c1037e1c44536d",
+      "canonical_payload": "{\"after_hash\":\"90d6cedfed61a506fe81831fbaad2b226c4a79a22d9025f5ecb23cf475c0056c\",\"before_hash\":\"f8dcc3d4dd80b945109d9497013b91c3960f05fa757e46409cdd314112120ad7\",\"command\":{\"action\":\"begin\",\"client\":\"A\",\"tx\":\"A\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"6ca3a792cfb49db04c45928f9fc463892de59755058961bb3c6360d7ce2f9c82\",\"result\":{\"replayed\":false,\"transaction\":{\"client\":\"A\",\"commit\":null,\"conflicts\":[],\"id\":\"A\",\"reads\":{},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}}},\"sequence\":1,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "01cc9cfaa7a11a0e5be98c11ca1220746fe31e64308b095f06916de89b1c6bc4",
+        "before_hash": "90d6cedfed61a506fe81831fbaad2b226c4a79a22d9025f5ecb23cf475c0056c",
+        "command": {
+          "action": "read",
+          "key": "east",
+          "tx": "A"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "4814233c4979048d11deeb99703896afa059f00a9a8c909e62c1037e1c44536d",
+        "result": {
+          "key": "east",
+          "source": "snapshot",
+          "transaction": {
+            "client": "A",
+            "commit": null,
+            "conflicts": [],
+            "id": "A",
+            "reads": {
+              "east": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          },
+          "value": 1,
+          "version": 0
+        },
+        "sequence": 2,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "a0eefd33141d78ae669e8c1757da3d65e3e94b2ec8fd2893db540fbb33e5e8d8",
+      "canonical_payload": "{\"after_hash\":\"01cc9cfaa7a11a0e5be98c11ca1220746fe31e64308b095f06916de89b1c6bc4\",\"before_hash\":\"90d6cedfed61a506fe81831fbaad2b226c4a79a22d9025f5ecb23cf475c0056c\",\"command\":{\"action\":\"read\",\"key\":\"east\",\"tx\":\"A\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"4814233c4979048d11deeb99703896afa059f00a9a8c909e62c1037e1c44536d\",\"result\":{\"key\":\"east\",\"source\":\"snapshot\",\"transaction\":{\"client\":\"A\",\"commit\":null,\"conflicts\":[],\"id\":\"A\",\"reads\":{\"east\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}},\"value\":1,\"version\":0},\"sequence\":2,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "1ca91dd5ace9a648df9614461c9058853e75918e44324903705095caa3249ad1",
+        "before_hash": "01cc9cfaa7a11a0e5be98c11ca1220746fe31e64308b095f06916de89b1c6bc4",
+        "command": {
+          "action": "read",
+          "key": "west",
+          "tx": "A"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "a0eefd33141d78ae669e8c1757da3d65e3e94b2ec8fd2893db540fbb33e5e8d8",
+        "result": {
+          "key": "west",
+          "source": "snapshot",
+          "transaction": {
+            "client": "A",
+            "commit": null,
+            "conflicts": [],
+            "id": "A",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          },
+          "value": 1,
+          "version": 0
+        },
+        "sequence": 3,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "71af9991255b1521402d386a7b27e15731d0c2a0860e1920f0397396d0083ebf",
+      "canonical_payload": "{\"after_hash\":\"1ca91dd5ace9a648df9614461c9058853e75918e44324903705095caa3249ad1\",\"before_hash\":\"01cc9cfaa7a11a0e5be98c11ca1220746fe31e64308b095f06916de89b1c6bc4\",\"command\":{\"action\":\"read\",\"key\":\"west\",\"tx\":\"A\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"a0eefd33141d78ae669e8c1757da3d65e3e94b2ec8fd2893db540fbb33e5e8d8\",\"result\":{\"key\":\"west\",\"source\":\"snapshot\",\"transaction\":{\"client\":\"A\",\"commit\":null,\"conflicts\":[],\"id\":\"A\",\"reads\":{\"east\":0,\"west\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}},\"value\":1,\"version\":0},\"sequence\":3,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "ecf5477721c7ea37c37d53f637a4cbda9a2a95a1cbccce7d60ce604e71186c98",
+        "before_hash": "1ca91dd5ace9a648df9614461c9058853e75918e44324903705095caa3249ad1",
+        "command": {
+          "action": "begin",
+          "client": "B",
+          "tx": "B"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "71af9991255b1521402d386a7b27e15731d0c2a0860e1920f0397396d0083ebf",
+        "result": {
+          "replayed": false,
+          "transaction": {
+            "client": "B",
+            "commit": null,
+            "conflicts": [],
+            "id": "B",
+            "reads": {},
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          }
+        },
+        "sequence": 4,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "87716bf0fe3eb494d9e494e662fa6c1912058d910bfde2bd0326857219ef17cb",
+      "canonical_payload": "{\"after_hash\":\"ecf5477721c7ea37c37d53f637a4cbda9a2a95a1cbccce7d60ce604e71186c98\",\"before_hash\":\"1ca91dd5ace9a648df9614461c9058853e75918e44324903705095caa3249ad1\",\"command\":{\"action\":\"begin\",\"client\":\"B\",\"tx\":\"B\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"71af9991255b1521402d386a7b27e15731d0c2a0860e1920f0397396d0083ebf\",\"result\":{\"replayed\":false,\"transaction\":{\"client\":\"B\",\"commit\":null,\"conflicts\":[],\"id\":\"B\",\"reads\":{},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}}},\"sequence\":4,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "c12ff201902a25c4dd0275a2a3ebbc069c83d03871d5a16bc4eb9b4cd5b91aba",
+        "before_hash": "ecf5477721c7ea37c37d53f637a4cbda9a2a95a1cbccce7d60ce604e71186c98",
+        "command": {
+          "action": "read",
+          "key": "east",
+          "tx": "B"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "87716bf0fe3eb494d9e494e662fa6c1912058d910bfde2bd0326857219ef17cb",
+        "result": {
+          "key": "east",
+          "source": "snapshot",
+          "transaction": {
+            "client": "B",
+            "commit": null,
+            "conflicts": [],
+            "id": "B",
+            "reads": {
+              "east": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          },
+          "value": 1,
+          "version": 0
+        },
+        "sequence": 5,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "64f2cf825febc866786b2952a8929e1928d0bb303fb73a3785858e0c9698d7d1",
+      "canonical_payload": "{\"after_hash\":\"c12ff201902a25c4dd0275a2a3ebbc069c83d03871d5a16bc4eb9b4cd5b91aba\",\"before_hash\":\"ecf5477721c7ea37c37d53f637a4cbda9a2a95a1cbccce7d60ce604e71186c98\",\"command\":{\"action\":\"read\",\"key\":\"east\",\"tx\":\"B\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"87716bf0fe3eb494d9e494e662fa6c1912058d910bfde2bd0326857219ef17cb\",\"result\":{\"key\":\"east\",\"source\":\"snapshot\",\"transaction\":{\"client\":\"B\",\"commit\":null,\"conflicts\":[],\"id\":\"B\",\"reads\":{\"east\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}},\"value\":1,\"version\":0},\"sequence\":5,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "261caab6e2adce361634322585e4624aa602c7b7332a4ee6049be56cbf85c6be",
+        "before_hash": "c12ff201902a25c4dd0275a2a3ebbc069c83d03871d5a16bc4eb9b4cd5b91aba",
+        "command": {
+          "action": "read",
+          "key": "west",
+          "tx": "B"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "64f2cf825febc866786b2952a8929e1928d0bb303fb73a3785858e0c9698d7d1",
+        "result": {
+          "key": "west",
+          "source": "snapshot",
+          "transaction": {
+            "client": "B",
+            "commit": null,
+            "conflicts": [],
+            "id": "B",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {}
+          },
+          "value": 1,
+          "version": 0
+        },
+        "sequence": 6,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "c7b60dd2c556104240c72c4a224494c1610991cdd2710eb7e9d55ec63b53f1d4",
+      "canonical_payload": "{\"after_hash\":\"261caab6e2adce361634322585e4624aa602c7b7332a4ee6049be56cbf85c6be\",\"before_hash\":\"c12ff201902a25c4dd0275a2a3ebbc069c83d03871d5a16bc4eb9b4cd5b91aba\",\"command\":{\"action\":\"read\",\"key\":\"west\",\"tx\":\"B\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"64f2cf825febc866786b2952a8929e1928d0bb303fb73a3785858e0c9698d7d1\",\"result\":{\"key\":\"west\",\"source\":\"snapshot\",\"transaction\":{\"client\":\"B\",\"commit\":null,\"conflicts\":[],\"id\":\"B\",\"reads\":{\"east\":0,\"west\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{}},\"value\":1,\"version\":0},\"sequence\":6,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "6ae563e0413343fb0d49da3be344063e246b36f39d96c192c4925412c7aa57b5",
+        "before_hash": "261caab6e2adce361634322585e4624aa602c7b7332a4ee6049be56cbf85c6be",
+        "command": {
+          "action": "write",
+          "key": "east",
+          "tx": "A",
+          "value": 0
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "c7b60dd2c556104240c72c4a224494c1610991cdd2710eb7e9d55ec63b53f1d4",
+        "result": {
+          "key": "east",
+          "source": "staged",
+          "transaction": {
+            "client": "A",
+            "commit": null,
+            "conflicts": [],
+            "id": "A",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {
+              "east": 0
+            }
+          },
+          "value": 0
+        },
+        "sequence": 7,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "9a73cae8b7aed007a4a3cca9c6e4c4bfbe209fbd7d3c449b3e54ad22228c7251",
+      "canonical_payload": "{\"after_hash\":\"6ae563e0413343fb0d49da3be344063e246b36f39d96c192c4925412c7aa57b5\",\"before_hash\":\"261caab6e2adce361634322585e4624aa602c7b7332a4ee6049be56cbf85c6be\",\"command\":{\"action\":\"write\",\"key\":\"east\",\"tx\":\"A\",\"value\":0},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"c7b60dd2c556104240c72c4a224494c1610991cdd2710eb7e9d55ec63b53f1d4\",\"result\":{\"key\":\"east\",\"source\":\"staged\",\"transaction\":{\"client\":\"A\",\"commit\":null,\"conflicts\":[],\"id\":\"A\",\"reads\":{\"east\":0,\"west\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{\"east\":0}},\"value\":0},\"sequence\":7,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "56bb15cd4a95dd365cbe882b9ba6c2114379c2505d64f2c52ae26d16a8d3d5d7",
+        "before_hash": "6ae563e0413343fb0d49da3be344063e246b36f39d96c192c4925412c7aa57b5",
+        "command": {
+          "action": "write",
+          "key": "west",
+          "tx": "B",
+          "value": 0
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "9a73cae8b7aed007a4a3cca9c6e4c4bfbe209fbd7d3c449b3e54ad22228c7251",
+        "result": {
+          "key": "west",
+          "source": "staged",
+          "transaction": {
+            "client": "B",
+            "commit": null,
+            "conflicts": [],
+            "id": "B",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": null,
+            "snapshot": 0,
+            "status": "active",
+            "writes": {
+              "west": 0
+            }
+          },
+          "value": 0
+        },
+        "sequence": 8,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "c2c19ddff1d04b59ae580b3492b75aafb0cc3f6c46855a437ed143500a464e18",
+      "canonical_payload": "{\"after_hash\":\"56bb15cd4a95dd365cbe882b9ba6c2114379c2505d64f2c52ae26d16a8d3d5d7\",\"before_hash\":\"6ae563e0413343fb0d49da3be344063e246b36f39d96c192c4925412c7aa57b5\",\"command\":{\"action\":\"write\",\"key\":\"west\",\"tx\":\"B\",\"value\":0},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"9a73cae8b7aed007a4a3cca9c6e4c4bfbe209fbd7d3c449b3e54ad22228c7251\",\"result\":{\"key\":\"west\",\"source\":\"staged\",\"transaction\":{\"client\":\"B\",\"commit\":null,\"conflicts\":[],\"id\":\"B\",\"reads\":{\"east\":0,\"west\":0},\"reason\":null,\"snapshot\":0,\"status\":\"active\",\"writes\":{\"west\":0}},\"value\":0},\"sequence\":8,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "034264310635916926fd84285eba43406cf126067dd52918776651cd84d9b4c7",
+        "before_hash": "56bb15cd4a95dd365cbe882b9ba6c2114379c2505d64f2c52ae26d16a8d3d5d7",
+        "command": {
+          "action": "commit",
+          "tx": "A"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "c2c19ddff1d04b59ae580b3492b75aafb0cc3f6c46855a437ed143500a464e18",
+        "result": {
+          "replayed": false,
+          "transaction": {
+            "client": "A",
+            "commit": 1,
+            "conflicts": [],
+            "id": "A",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": "committed",
+            "snapshot": 0,
+            "status": "committed",
+            "writes": {
+              "east": 0
+            }
+          }
+        },
+        "sequence": 9,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "7aa7d222ec9eb671de69a5eda9e2140cbd16257ab235db684041e4ec55fb3000",
+      "canonical_payload": "{\"after_hash\":\"034264310635916926fd84285eba43406cf126067dd52918776651cd84d9b4c7\",\"before_hash\":\"56bb15cd4a95dd365cbe882b9ba6c2114379c2505d64f2c52ae26d16a8d3d5d7\",\"command\":{\"action\":\"commit\",\"tx\":\"A\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"c2c19ddff1d04b59ae580b3492b75aafb0cc3f6c46855a437ed143500a464e18\",\"result\":{\"replayed\":false,\"transaction\":{\"client\":\"A\",\"commit\":1,\"conflicts\":[],\"id\":\"A\",\"reads\":{\"east\":0,\"west\":0},\"reason\":\"committed\",\"snapshot\":0,\"status\":\"committed\",\"writes\":{\"east\":0}}},\"sequence\":9,\"workspace\":\"serializable_2f3a2ba7\"}"
+    },
+    {
+      "event": {
+        "after_hash": "f2002cb55dceeb2af1a50ac70f285f7266103d2c1e7e568cd7cceb1c91cf3057",
+        "before_hash": "034264310635916926fd84285eba43406cf126067dd52918776651cd84d9b4c7",
+        "command": {
+          "action": "commit",
+          "tx": "B"
+        },
+        "format": "isolation-island-event-v1",
+        "previous_hash": "7aa7d222ec9eb671de69a5eda9e2140cbd16257ab235db684041e4ec55fb3000",
+        "result": {
+          "replayed": false,
+          "transaction": {
+            "client": "B",
+            "commit": null,
+            "conflicts": [
+              {
+                "key": "east",
+                "latest": 1,
+                "observed": 0,
+                "type": "read_changed"
+              }
+            ],
+            "id": "B",
+            "reads": {
+              "east": 0,
+              "west": 0
+            },
+            "reason": "validation_failed",
+            "snapshot": 0,
+            "status": "aborted",
+            "writes": {
+              "west": 0
+            }
+          }
+        },
+        "sequence": 10,
+        "workspace": "serializable_2f3a2ba7"
+      },
+      "hash": "f576fe1b2c479ef0c046b1c08a4ef5749171cb61610a8fd3c345762b47e37a13",
+      "canonical_payload": "{\"after_hash\":\"f2002cb55dceeb2af1a50ac70f285f7266103d2c1e7e568cd7cceb1c91cf3057\",\"before_hash\":\"034264310635916926fd84285eba43406cf126067dd52918776651cd84d9b4c7\",\"command\":{\"action\":\"commit\",\"tx\":\"B\"},\"format\":\"isolation-island-event-v1\",\"previous_hash\":\"7aa7d222ec9eb671de69a5eda9e2140cbd16257ab235db684041e4ec55fb3000\",\"result\":{\"replayed\":false,\"transaction\":{\"client\":\"B\",\"commit\":null,\"conflicts\":[{\"key\":\"east\",\"latest\":1,\"observed\":0,\"type\":\"read_changed\"}],\"id\":\"B\",\"reads\":{\"east\":0,\"west\":0},\"reason\":\"validation_failed\",\"snapshot\":0,\"status\":\"aborted\",\"writes\":{\"west\":0}}},\"sequence\":10,\"workspace\":\"serializable_2f3a2ba7\"}"
+    }
+  ],
+  "verified": true,
+  "httpStatus": 200
+}

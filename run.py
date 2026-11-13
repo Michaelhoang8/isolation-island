@@ -25,7 +25,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.command in ('GET','HEAD'):
                 if path in ASSETS:
                     file,mime=ASSETS[path];return self.reply(200,(ROOT/file).read_bytes(),mime)
-                if path=='/api/workspaces':return self.reply(200,{'resources':self.server.store.list()})
+                if path=='/api/workspaces':return self.reply(200,{'workspaces':self.server.store.list()})
                 if match and not match.group(2):return self.reply(200,self.server.store.snapshot(match.group(1)))
                 return self.reply(404,{'error':'Not found.'})
             if self.command!='POST':return self.reply(405,{'error':'Method not supported.'})
