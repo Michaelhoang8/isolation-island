@@ -4,6 +4,8 @@ A durable MVCC transaction workbench: reproduce write skew under snapshot isolat
 
 ![Serializable validation aborts a stale reader](docs/workbench.png)
 
+The commit-version diagram shows durable values on aligned record lanes. Green filled nodes mark the latest committed versions; amber outlines identify the committed versions visible to the selected transaction snapshot. Private staged writes remain in the inspector. The diagram fades on changed version/snapshot data and respects reduced motion; narrow screens scroll it internally.
+
 ## Run
 
 Requires Python 3.10+; no runtime packages or external services.

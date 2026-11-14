@@ -48,13 +48,102 @@ async function guarded(fn) {
     controls();
   }
 }
+let lastVersionMap = "";
+function drawVersions(state, tx) {
+  const signature = JSON.stringify([state.versions, tx?.snapshot]);
+  if (signature === lastVersionMap) return;
+  lastVersionMap = signature;
+  const chart = $("version-map"),
+    entries = Object.entries(state.versions),
+    width = Math.max(820, 200 + 110 * (state.head + 1)),
+    height = 70 + entries.length * 65;
+  const element = (tag, attrs, text) => {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+  const x = (v) => 140 + (v * (width - 230)) / Math.max(1, state.head);
+  chart.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  chart.style.minWidth = `${width}px`;
+  chart.replaceChildren();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+    chart.animate([{ opacity: 0.45 }, { opacity: 1 }], { duration: 300 });
+  for (let v = 0; v <= state.head; v++) {
+    chart.append(
+      element("line", {
+        x1: x(v),
+        x2: x(v),
+        y1: 32,
+        y2: height - 20,
+        class: "commit-line",
+      }),
+    );
+    chart.append(
+      element("text", { x: x(v), y: 20, "text-anchor": "middle" }, `v${v}`),
+    );
+  }
+  if (tx)
+    chart.append(
+      element("line", {
+        x1: x(tx.snapshot),
+        x2: x(tx.snapshot),
+        y1: 28,
+        y2: height - 15,
+        class: "snapshot-line",
+      }),
+    );
+  entries.forEach(([name, versions], i) => {
+    const y = 60 + i * 65,
+      visible = tx ? versions.findLast((v) => v.version <= tx.snapshot) : null;
+    chart.append(element("text", { x: 15, y: y + 4 }, name));
+    chart.append(
+      element("line", {
+        x1: x(0),
+        x2: x(state.head),
+        y1: y,
+        y2: y,
+        class: "record-line",
+      }),
+    );
+    versions.forEach((v, j) => {
+      const g = element("g", {}, undefined),
+        chosen = visible?.version === v.version;
+      g.append(
+        element(
+          "title",
+          {},
+          `${name}: ${v.value} at commit ${v.version}${chosen ? ", selected snapshot" : ""}`,
+        ),
+      );
+      g.append(
+        element("circle", {
+          cx: x(v.version),
+          cy: y,
+          r: chosen ? 13 : 9,
+          class: `version-node ${j === versions.length - 1 ? "latest" : ""} ${chosen ? "snapshot-node" : ""}`,
+        }),
+      );
+      g.append(
+        element(
+          "text",
+          { x: x(v.version), y: y + 28, "text-anchor": "middle" },
+          String(v.value),
+        ),
+      );
+      chart.append(g);
+    });
+  });
+}
 function render() {
+  const focusedTransaction = document.activeElement?.dataset.transaction;
   const state = snapshot.state,
     t = transaction();
   $("mode").textContent =
     state.mode === "snapshot" ? "Snapshot isolation" : "Serializable OCC";
   $("head").textContent = state.head;
   $("audit").textContent = snapshot.events.length + " verified events";
+  drawVersions(state, t);
   const records = state.versions,
     rule =
       Object.keys(records).length === 2 &&
@@ -102,6 +191,7 @@ function render() {
   $("transactions").replaceChildren(
     ...Object.values(state.transactions).map((tx) => {
       const b = document.createElement("button");
+      b.dataset.transaction = tx.id;
       b.textContent = `${tx.id} · ${tx.client}\n${tx.status} / snapshot ${tx.snapshot}`;
       b.setAttribute("aria-pressed", selected === tx.id);
       b.onclick = () => {
@@ -112,6 +202,10 @@ function render() {
       return b;
     }),
   );
+  if (focusedTransaction)
+    [...$("transactions").querySelectorAll("button")]
+      .find((b) => b.dataset.transaction === focusedTransaction)
+      ?.focus({ preventScroll: true });
   const old = $("record").value;
   $("record").replaceChildren(
     ...Object.keys(records).map((k) => new Option(k, k)),

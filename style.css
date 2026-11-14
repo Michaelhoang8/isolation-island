@@ -437,3 +437,195 @@ footer {
     flex-wrap: wrap;
   }
 }
+
+/* Version ledger */
+:root {
+  background: #f4f5f1;
+  --green: #426d67;
+  --line: #d3ddd8;
+  color: #344a45;
+}
+header {
+  background: #fff;
+  padding: 21px 4%;
+}
+header a {
+  font:
+    600 16px Arial,
+    sans-serif;
+  letter-spacing: -0.3px;
+}
+main {
+  padding: 22px 4% 45px;
+}
+.workspace-bar {
+  border-top: 0;
+  padding-top: 0;
+}
+.summary {
+  background: transparent;
+  border-inline: 0;
+  border-radius: 0;
+  padding: 24px 0;
+  gap: 28px;
+}
+.summary strong {
+  font:
+    500 21px Arial,
+    sans-serif;
+  line-height: 1.4;
+}
+#head {
+  font:
+    36px ui-monospace,
+    monospace;
+  color: #36736a;
+  margin-top: 5px;
+}
+.small,
+small,
+label,
+.note,
+#read-result,
+.lower p,
+#status {
+  color: #71857d;
+}
+.section-head h2 {
+  font:
+    500 22px Arial,
+    sans-serif;
+}
+.version-scroll {
+  overflow: auto;
+  border: 1px solid #cbd8d1;
+  background: #fff;
+  border-radius: 3px;
+}
+#version-map {
+  display: block;
+  width: 100%;
+}
+#version-map text {
+  font:
+    12px ui-monospace,
+    monospace;
+  fill: #658276;
+}
+.commit-line {
+  stroke: #e7eeea;
+}
+.record-line {
+  stroke: #cbdad2;
+  stroke-width: 3;
+}
+.snapshot-line {
+  stroke: #bc9458;
+  stroke-dasharray: 4 5;
+}
+.version-node {
+  fill: #fff;
+  stroke: #97b6a6;
+  stroke-width: 2;
+}
+.version-node.latest {
+  fill: #518576;
+  stroke: #518576;
+}
+.version-node.snapshot-node {
+  stroke: #b17b34;
+  stroke-width: 3;
+}
+.map-key {
+  font:
+    10px/1.7 Arial,
+    sans-serif;
+  color: #7e8e85;
+}
+.records > details {
+  border: 0;
+  padding: 12px 0;
+}
+.transaction-area {
+  border-radius: 3px;
+  background: #fff;
+}
+.transaction-area nav {
+  background: #203c39;
+  color: #dfebe6;
+  border: 0;
+}
+.transaction-area nav .small,
+.transaction-area nav label {
+  color: #a9c5b9;
+}
+#transactions button {
+  background: #294a44;
+  color: #c8ded3;
+  border-color: #3f6056;
+  white-space: pre-line;
+}
+#transactions button[aria-pressed="true"] {
+  background: #b5d4c2;
+  border-color: #b5d4c2;
+  color: #1d3e33;
+}
+#begin-form {
+  border-color: #3f6056;
+}
+#begin-form input {
+  background: #18352f;
+  border-color: #466258;
+  color: #e0ece7;
+}
+#begin-form button {
+  background: #d7e6dc;
+}
+.sets pre {
+  background: #f0f5f1;
+  border: 1px solid #dae5dd;
+  min-height: 100px;
+}
+#conflicts {
+  border-left: 3px solid #bf975c;
+  background: #f8f2e8;
+}
+button {
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+button:hover:not(:disabled) {
+  background: #e5eee8;
+}
+#commit:hover:not(:disabled),
+#skew:hover:not(:disabled) {
+  background: #34584e;
+}
+.table-wrap {
+  background: #fff;
+  border: 1px solid var(--line);
+}
+@media (max-width: 600px) {
+  header {
+    flex-wrap: wrap;
+  }
+  .summary {
+    padding: 18px 0;
+  }
+  .summary strong {
+    font-size: 18px;
+  }
+  .workspace-bar select {
+    max-width: 100%;
+  }
+  .commit-actions {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

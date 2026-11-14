@@ -14,15 +14,6 @@
       ><button id="export">Export evidence ↗</button>
     </header>
     <main>
-      <section class="intro">
-        <div>
-          <p class="small">A VIEW FROM EACH TRANSACTION</p>
-          <h1>The present has<br />more than one version.</h1>
-        </div>
-        <p>
-          Read a snapshot. Stage a change.<br />See what survives the commit.
-        </p>
-      </section>
       <section class="workspace-bar">
         <label>Workspace<select id="workspaces"></select></label
         ><button id="refresh">Refresh</button
@@ -43,10 +34,24 @@
       </section>
       <section class="records">
         <div class="section-head">
-          <h2>Every committed version.</h2>
+          <h2>Committed versions</h2>
           <span id="view-note"></span>
         </div>
-        <div id="record-list"></div>
+        <div class="version-scroll">
+          <svg
+            id="version-map"
+            role="img"
+            aria-label="Committed record versions by commit number"
+          ></svg>
+        </div>
+        <p class="map-key">
+          Commit number → · amber outlines mark versions belonging to the
+          selected snapshot · filled nodes are the latest committed versions
+        </p>
+        <details>
+          <summary>Record values and transaction visibility</summary>
+          <div id="record-list"></div>
+        </details>
       </section>
       <section class="transaction-area">
         <nav>
@@ -111,7 +116,7 @@
       <p id="error" role="alert"></p>
       <section class="events">
         <div class="section-head">
-          <h2>The command journal.</h2>
+          <h2>Command journal</h2>
           <span id="event-count"></span>
         </div>
         <div class="table-wrap">
@@ -218,7 +223,7 @@
       </section>
     </main>
     <footer>
-      Isolation Island / Snapshots, decisions, consequences.<span
+      Isolation Island<span
         >Persistent SQLite state · real HTTP commands</span
       >
     </footer>
